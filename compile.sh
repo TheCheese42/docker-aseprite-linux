@@ -32,7 +32,7 @@ cd /output
 
 if [ ! -d "/output/aseprite" ]
 then
-  git clone -b v1.3.12 --recursive https://github.com/aseprite/aseprite.git
+  git clone -b v1.3.11 --recursive https://github.com/aseprite/aseprite.git
 fi
 
 cd aseprite
