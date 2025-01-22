@@ -4,14 +4,15 @@
 set -e
 
 echo "Download and compile Skia & other dependencies"
-cd /dependencies
+mkdir -p dependencies
+cd dependencies
 
-if [ ! -d "/dependencies/depot_tools" ]
+if [ ! -d "depot_tools" ]
 then
   git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 fi
 
-if [ ! -d "/dependencies/skia" ]
+if [ ! -d "skia" ]
 then
   git clone -b aseprite-m102 https://github.com/aseprite/skia.git
 fi
@@ -28,9 +29,11 @@ gn gen out/Release-x64 --args="is_debug=false is_official_build=true skia_use_sy
 ninja -C out/Release-x64 skia modules
 
 echo "Download Aseprite and compile"
-cd /output
+cd ../..
+mkdir -p output
+cd output
 
-if [ ! -d "/output/aseprite" ]
+if [ ! -d "aseprite" ]
 then
   git clone -b v1.3.11 --recursive https://github.com/aseprite/aseprite.git
 fi
@@ -43,9 +46,9 @@ echo "Compiling Asperite"
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DLAF_BACKEND=skia \
-  -DSKIA_DIR=/dependencies/skia \
-  -DSKIA_LIBRARY_DIR=/dependencies/skia/out/Release-x64 \
-  -DSKIA_LIBRARY=/dependencies/skia/out/Release-x64/libskia.a \
+  -DSKIA_DIR=../../../dependencies/skia \
+  -DSKIA_LIBRARY_DIR=../../../dependencies/skia/out/Release-x64 \
+  -DSKIA_LIBRARY=../../../dependencies/skia/out/Release-x64/libskia.a \
   -G Ninja \
   ..
 
